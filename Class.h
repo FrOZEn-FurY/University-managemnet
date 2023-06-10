@@ -16,7 +16,7 @@ using namespace std; // Just in case
 class Class // A class for ClassRooms ( lessons )
 {
 	friend bool Interference(Class c1, Class c2);
-	int ID, Location; // ID will be the class id and location will be set later for the class
+	int ID, Location, Number_Of_Sessions; // ID will be the class id and location will be set later for the class
 	string Proffessor, ClassName; // Variable to store the proffesor's name and the class name
 	bool VP = false, FC = false; // The first boolean if for checking the video projector need and the second one is for forume classes
 	Student s[40]; // Stores the students of a class
@@ -26,10 +26,6 @@ class Class // A class for ClassRooms ( lessons )
 public:
 	Class(int id = 0, string p = "", string cn = "", bool vp = false, bool fc = false, Date d = Date(0, 0, 0, ""), Time dt = Time(0, 0), Time st = Time(0, 0))
 	{ // Constractor
-		while (mark[id] == 1) // If the ID was reapeted, they need to try again giving the ID
-		{
-			cin >> id;
-		}
 		ID = id;
 		mark[ID] = 1;
 		Proffessor = p;
@@ -49,6 +45,7 @@ public:
 	void Set_STU(int id, string n, int i) { s[i].Set_N(n); s[i].Set_SN(id); }
 	void Set_D(Date d) { date = d; }
 	void Set_DT(Time dt) { DurationTime = dt; }
+	void Set_NOS(int nos) { Number_Of_Sessions = nos; }
 	void Set_ST(Time st) { StartingTime = st; } // The end of the Set functions
 	int Ret_ID() { return ID; } // The start of the Ret functions for each variable
 	int Ret_L() { return Location; }
@@ -59,6 +56,7 @@ public:
 	Date Ret_D() { return date; }
 	Time Ret_DT() { return DurationTime; }
 	Time Ret_ST() { return StartingTime; }
+	int Ret_NOS() { return Number_Of_Sessions; }
 	Student Ret_STU(int i) { return s[i]; } // The end of the Ret functions
 	bool operator>(Class ob) // This fucntion, ralted to the operator> function in Time class, 
 		// returns wither the first object starts later than the second object or not. 
@@ -69,6 +67,8 @@ public:
 	{
 		return this->StartingTime + this->DurationTime;
 	}
+	void Set_Marker(int id) { mark[id] = 1; } // Using this function and the function below, we check whether the class id was repeated or not
+	int Ret_Marker(int id) { return mark[id]; }
 };
 
 int Class::mark[10000] = {}; // Filling the array with zeros

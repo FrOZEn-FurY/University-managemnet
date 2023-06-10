@@ -2,6 +2,7 @@
 #include <iostream> 
 #include <string>
 #include <fstream>
+#include <windows.h>
 #include "Class.h"
 #include "Time.h"
 #include "Date.h"
@@ -28,13 +29,12 @@ Class CRs[maxn]; // The maximum amount of classes that this university can have
 int main()
 {
     cout << "Welcome to the university management program\nplease do not press any key until the program loads completely" << endl;
-    _sleep(2); // A Welcome message and a little bit of wait
     while (1)
     {
         cout << "Choose from options below :" << endl << "1.Insert a class and setting its location yourself ( manual insertion )"
             << endl << "2.Inserting a class's information and letting the program set its location ( manual insertion )" << endl
             << "3.Insert a class and setting its location yourself ( from a file )" << endl
-            << "4.Inserting a class's information and letting the program set its location ( from a file )"
+            << "4.Inserting a class's information and letting the program set its location ( from a file )" << endl
             << "5.Getting the report from the classes that had been set so far" << endl
             << "6.Exit the program" << endl; // Menu option
         int opt;
@@ -114,20 +114,25 @@ int main()
                 int countS = 0;
                 while (SN > 0)
                 {
+                	bool t = false;
                     if (SN > 9999 or SN < 1000) // Checking the 4 digit of student number
                     {
                         cout << "Wrong input, Please try again:" << endl;
-                        continue;
+                        t = true;
                     }
                     if (markS[SN] == 1) // Checking the repition of student number
                     {
                         cout << "The student number must not be repeated, please try again:" << endl;
-                        continue;
+                        t = true;
                     }
-                    s[countS].Set_N(Name);
-                    s[countS].Set_SN(SN);
-                    markS[SN] = 1;
-                    countS++;
+                    if (!t)
+                    {
+                    	s[countS].Set_N(Name);
+                    	s[countS].Set_SN(SN);
+                    	markS[SN] = 1;
+                    	countS++;
+					}
+                    cin >> SN >> Name;
                 } // End of getting info from user
                 C.Set_ID(ID);
                 C.Set_CN(ClassName);
@@ -229,20 +234,25 @@ int main()
                 int countS = 0;
                 while (SN > 0)
                 {
-                    if (SN > 9999 or SN < 1000)
+                    bool t = false;
+                    if (SN > 9999 or SN < 1000) // Checking the 4 digit of student number
                     {
                         cout << "Wrong input, Please try again:" << endl;
-                        continue;
+                        t = true;
                     }
-                    if (markS[SN] == 1)
+                    if (markS[SN] == 1) // Checking the repition of student number
                     {
                         cout << "The student number must not be repeated, please try again:" << endl;
-                        continue;
+                        t = true;
                     }
-                    s[countS].Set_N(Name);
-                    s[countS].Set_SN(SN);
-                    markS[SN] = 1;
-                    countS++;
+                    if (!t)
+                    {
+                        s[countS].Set_N(Name);
+                        s[countS].Set_SN(SN);
+                        markS[SN] = 1;
+                        countS++;
+                    }
+                    cin >> SN >> Name;
                 }
                 C.Set_ID(ID);
                 C.Set_CN(ClassName);

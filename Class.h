@@ -16,7 +16,7 @@ using namespace std; // Just in case
 class Class // A class for ClassRooms ( lessons )
 {
 	friend bool Interference(Class c1, Class c2);
-	int ID, Location, Number_Of_Sessions; // ID will be the class id and location will be set later for the class
+	int ID, Location = 0, Number_Of_Sessions; // ID will be the class id and location will be set later for the class
 	string Proffessor, ClassName; // Variable to store the proffesor's name and the class name
 	bool VP = false, FC = false; // The first boolean if for checking the video projector need and the second one is for forume classes
 	Student s[40]; // Stores the students of a class

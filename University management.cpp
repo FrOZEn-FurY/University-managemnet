@@ -24,6 +24,7 @@ string ToLower(string s);
 const int maxn = 1000000; // A limit for the total amount of classes
 int ClassCount = 0; // A class counter
 Class CRs[maxn]; // The maximum amount of classes that this university can have
+bool FirstReport = false; // A boolean to check whether user got report before or not 
 
 int main()
 {
@@ -137,13 +138,379 @@ int main()
                     C.Set_NOS(NOS);
                 for (int i = 0; i < countS; i++)
                     C.Set_STU(s[i].Ret_SN(), s[i].Ret_N(), i);
+                bool Inter = false;
+                for (int i = 0; i < ClassCount; i++)
+                {
+                    if (CRs[i].Ret_D().Ret_Dow() == DOW)
+                    {
+                        Class temp;
+                        temp.Set_ST(Strt);
+                        temp.Set_DT(Dur);
+                        temp.Set_L(Location);
+                        if (CRs[i].Ret_D().Ret_Dow() == C.Ret_D().Ret_Dow())
+                            if (Interference(temp, CRs[i]))
+                            {
+                                Inter = true;
+                                break;
+                            }
+                    }
+                }
+                if (Inter)
+                {
+                    cout << "The class you gave the program has interference with other classes." << endl;
+                    break;
+                }
                 CRs[ClassCount] = C;
                 ClassCount++;
                 break;
             }
             case 2:
             {
-
+                Class C;
+                int ID, Location, SN, H, M, NOS;
+                string Proffesor, ClassName, DOW, Name;
+                bool VP, FC;
+                cout << "Enter Class ID ( It must be a 4 digit positive inteeger ):";
+                cin >> ID;
+                while (ID < 1000 or ID > 9999)
+                {
+                    cout << "Wrong input. Please try again:";
+                    cin >> ID;
+                }
+                while (C.Ret_Marker(ID))
+                {
+                    cout << "The Id must not be repeated, please try again:" << endl;
+                    cin >> ID;
+                }
+                C.Set_Marker(ID);
+                cout << "Enter the class's name:";
+                cin >> ClassName;
+                cout << "Enter the proffesor of this class's name:";
+                cin >> Proffesor;
+                string temp;
+                cout << "Does this class need video projector? ( type yes or true if it does ) :";
+                cin >> temp;
+                temp = ToLower(temp);
+                if (temp == "yes" or temp == "true")
+                    VP = true;
+                else
+                    VP = false;
+                cout << "Is this class a forum class ? ( type yes or true if it is ) :";
+                cin >> temp;
+                temp = ToLower(temp);
+                if (temp == "true" or temp == "yes")
+                    FC = true;
+                else
+                    FC = false;
+                if (FC)
+                {
+                    cout << "Enter number of sessions:";
+                    cin >> NOS;
+                }
+                cout << "Enter the hour that the class starts at:";
+                cin >> H;
+                cout << "Enter the minute that the class starts at:";
+                cin >> M;
+                Time Strt(H, M);
+                cout << "Enter the hour for the length of class:";
+                cin >> H;
+                cout << "Enter the minute for the length of class:";
+                cin >> M;
+                Time Dur(H, M);
+                cout << "At what day of week the class needs to be held? :";
+                cin >> DOW;
+                cout << "Enter the student number and the name of students in order ( type -1 as id if u want to stop giving, also the student number must be 4 digit inteeger ) :";
+                cin >> SN >> Name;
+                Student s[40];
+                int countS = 0;
+                while (SN > 0)
+                {
+                    if (SN > 9999 or SN < 1000)
+                    {
+                        cout << "Wrong input, Please try again:" << endl;
+                        continue;
+                    }
+                    if (s[countS].Ret_Marker(SN))
+                    {
+                        cout << "The student number must not be repeated, please try again:" << endl;
+                        continue;
+                    }
+                    s[countS].Set_N(Name);
+                    s[countS].Set_SN(SN);
+                    s[countS].Set_Marker(SN);
+                    countS++;
+                }
+                C.Set_ID(ID);
+                C.Set_CN(ClassName);
+                C.Set_D(Date(0, 0, 0, DOW));
+                C.Set_DT(Dur);
+                C.Set_FC(FC);
+                C.Set_L(Location);
+                C.Set_P(Proffesor);
+                C.Set_ST(Strt);
+                C.Set_VP(VP);
+                if (FC)
+                    C.Set_NOS(NOS);
+                for (int i = 0; i < countS; i++)
+                    C.Set_STU(s[i].Ret_SN(), s[i].Ret_N(), i);
+                if (VP)
+                {
+                    for (int i = 6; i <= 10; i++)
+                    {
+                        Location = i;
+                        bool Inter = false;
+                        for (int j = 0; j < ClassCount; j++)
+                        {
+                            Class temp;
+                            temp.Set_ST(Strt);
+                            temp.Set_DT(Dur);
+                            temp.Set_L(Location);
+                            if (CRs[i].Ret_D().Ret_Dow() == C.Ret_D().Ret_Dow())
+                                if (Interference(CRs[i], temp))
+                                {
+                                    Inter = true;
+                                    break;
+                                }
+                        }
+                        if (!Inter)
+                        {
+                            C.Set_L(Location);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        Location = i;
+                        bool Inter = false;
+                        for (int j = 0; j < ClassCount; j++)
+                        {
+                            Class temp;
+                            temp.Set_ST(Strt);
+                            temp.Set_DT(Dur);
+                            temp.Set_L(Location);
+                            if (CRs[i].Ret_D().Ret_Dow() == C.Ret_D().Ret_Dow())
+                                if (Interference(CRs[i], temp))
+                                {
+                                    Inter = true;
+                                    break;
+                                }
+                        }
+                        if (!Inter)
+                        {
+                            C.Set_L(Location);
+                            break;
+                        }
+                    }
+                }
+                if (C.Ret_L() == 0)
+                {
+                    cout << "The class can not be set with this information, because it has interference with the other classes in any location." << endl;
+                    break;
+                }
+                CRs[ClassCount] = C;
+                ClassCount++;
+                break;
+            }
+            case 3:
+            {
+                Class C;
+                bool Problem = false;
+                int ID, Location, SN, H1, M1, H2, M2, NOS;
+                string Proffesor, ClassName, DOW, Name;
+                bool VP, FC;
+                cout << "Please enter the file address to read with the file name and prefix at the end of it. Please note that the file must contain only one class" <<
+                    " information and the information must be in this order : Class ID, Class Name, Proffesor Name, Location, Video projector need, Forums Class condition, If its a forum class put the Number of sessions at the end of file, Starting time, Duration time, " <<
+                    "Day of week, and the students with the Student number first and their name at second and also for the end of Students put a -1 as Student number :" << endl;
+                string FileAddress;
+                cin >> FileAddress;
+                ifstream InFile(FileAddress, ios::in);
+                string Vp, Fc;
+                InFile >> ID >> ClassName >> Proffesor >> Location >> Vp >> Fc >> H1 >> M1 >> H2 >> M2 >> DOW;
+                if (C.Ret_Marker(ID) == 1)
+                {
+                    cout << "The Class ID was repeated. Fix the problem and try again" << endl;
+                    Problem = true;
+                    break;
+                }
+                Student s[40];
+                int countS = 0;
+                InFile >> SN >> Name;
+                while (SN > 0)
+                {
+                    if (SN < 1000 or SN > 9999)
+                    {
+                        cout << "The file has a problem in the student IDs, the IDs must be 4 digits. Fix the problem and try again" << endl;
+                        Problem = true;
+                        break;
+                    }
+                    if (s[countS].Ret_Marker(SN) == 1)
+                    {
+                        cout << "The file has a problem with student IDs, the IDs must not be repeated. Fix the problem and try again." << endl;
+                        Problem = true;
+                        break;
+                    }
+                    s[countS].Set_N(Name);
+                    s[countS].Set_SN(SN);
+                    s[countS].Set_Marker(SN);
+                    countS++;
+                }
+                if (Problem)
+                    break;
+                InFile >> NOS;
+                Time Strt(H1, M1);
+                Time Dur(H2, M2);
+                C.Set_ID(ID);
+                C.Set_CN(ClassName);
+                C.Set_D(Date(0, 0, 0, DOW));
+                C.Set_DT(Dur);
+                C.Set_FC(FC);
+                C.Set_L(Location);
+                C.Set_P(Proffesor);
+                C.Set_ST(Strt);
+                C.Set_VP(VP);
+                if (FC)
+                    C.Set_NOS(NOS);
+                for (int i = 0; i < countS; i++)
+                    C.Set_STU(s[i].Ret_SN(), s[i].Ret_N(), i);
+                for (int i = 0; i < ClassCount; i++)
+                    if (CRs[i].Ret_D().Ret_Dow() == C.Ret_D().Ret_Dow())
+                        if (Interference(CRs[i], C))
+                        {
+                            Problem = true;
+                            break;
+                        }
+                if (Problem)
+                {
+                    cout << "The class you gave the program has interference with other classes" << endl;
+                    break;
+                }
+                CRs[ClassCount] = C;
+                ClassCount++;
+                break;
+            }
+            case 4:
+            {
+                Class C;
+                bool Problem = false;
+                int ID, Location, SN, H1, M1, H2, M2, NOS;
+                string Proffesor, ClassName, DOW, Name;
+                bool VP, FC;
+                cout << "Please enter the file address to read with the file name and prefix at the end of it. Please note that the file must contain only one class" <<
+                    " information and the information must be in this order : Class ID, Class Name, Proffesor Name, Video projector need, Forums Class condition, If its a forum class put the Number of sessions at the end of file, Starting time, Duration time, " <<
+                    "Day of week, and the students with the Student number first and their name at second and also for the end of Students put a -1 as Student number :" << endl;
+                string FileAddress;
+                cin >> FileAddress;
+                ifstream InFile(FileAddress, ios::in);
+                string Vp, Fc;
+                InFile >> ID >> ClassName >> Proffesor >> Vp >> Fc >> H1 >> M1 >> H2 >> M2 >> DOW;
+                if (C.Ret_Marker(ID) == 1)
+                {
+                    cout << "The Class ID was repeated. Fix the problem and try again" << endl;
+                    Problem = true;
+                    break;
+                }
+                Student s[40];
+                int countS = 0;
+                InFile >> SN >> Name;
+                while (SN > 0)
+                {
+                    if (SN < 1000 or SN > 9999)
+                    {
+                        cout << "The file has a problem in the student IDs, the IDs must be 4 digits. Fix the problem and try again" << endl;
+                        Problem = true;
+                        break;
+                    }
+                    if (s[countS].Ret_Marker(SN) == 1)
+                    {
+                        cout << "The file has a problem with student IDs, the IDs must not be repeated. Fix the problem and try again." << endl;
+                        Problem = true;
+                        break;
+                    }
+                    s[countS].Set_N(Name);
+                    s[countS].Set_SN(SN);
+                    s[countS].Set_Marker(SN);
+                    countS++;
+                }
+                if (Problem)
+                    break;
+                InFile >> NOS;
+                Time Strt(H1, M1);
+                Time Dur(H2, M2);
+                C.Set_ID(ID);
+                C.Set_CN(ClassName);
+                C.Set_D(Date(0, 0, 0, DOW));
+                C.Set_DT(Dur);
+                C.Set_FC(FC);
+                C.Set_P(Proffesor);
+                C.Set_ST(Strt);
+                C.Set_VP(VP);
+                if (FC)
+                    C.Set_NOS(NOS);
+                for (int i = 0; i < countS; i++)
+                    C.Set_STU(s[i].Ret_SN(), s[i].Ret_N(), i);
+                if (VP)
+                {
+                    for (int i = 6; i <= 10; i++)
+                    {
+                        Location = i;
+                        bool Inter = false;
+                        for (int j = 0; j < ClassCount; j++)
+                        {
+                            Class temp;
+                            temp.Set_ST(Strt);
+                            temp.Set_DT(Dur);
+                            temp.Set_L(Location);
+                            if (CRs[i].Ret_D().Ret_Dow() == C.Ret_D().Ret_Dow())
+                                if (Interference(CRs[i], temp))
+                                {
+                                    Inter = true;
+                                    break;
+                                }
+                        }
+                        if (!Inter)
+                        {
+                            C.Set_L(Location);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        Location = i;
+                        bool Inter = false;
+                        for (int j = 0; j < ClassCount; j++)
+                        {
+                            Class temp;
+                            temp.Set_ST(Strt);
+                            temp.Set_DT(Dur);
+                            temp.Set_L(Location);
+                            if (CRs[i].Ret_D().Ret_Dow() == C.Ret_D().Ret_Dow())
+                                if (Interference(CRs[i], temp))
+                                {
+                                    Inter = true;
+                                    break;
+                                }
+                        }
+                        if (!Inter)
+                        {
+                            C.Set_L(Location);
+                            break;
+                        }
+                    }
+                }
+                if (C.Ret_L() == 0)
+                {
+                    cout << "The class can not be set because it has interference with other classes in any location" << endl;
+                    break;
+                }
+                CRs[ClassCount] = C;
+                ClassCount++;
+                break;
             }
         }
     }
@@ -178,8 +545,10 @@ bool Interference(Class c1, Class c2) // This function will check wither two cla
     Time c2ET = c2.EndTime();
     if (c1.StartingTime > c2ET or c2.StartingTime > c1ET)
         return false;
-    else
+    else if (c1.Ret_L() == c2.Ret_L())
         return true;
+    else
+        return false;
     /*
         Using the operator> function in Time header and the EndTime function in Class header,
         we check if the classes have complexity or not.
@@ -193,3 +562,4 @@ string ToLower(string s) // This function makes the input string lowercase
             s[i] += 37;
     return s;
 }
+// Students marks

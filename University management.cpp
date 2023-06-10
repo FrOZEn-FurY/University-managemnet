@@ -24,7 +24,6 @@ string ToLower(string s);
 const int maxn = 1000000; // A limit for the total amount of classes
 int ClassCount = 0; // A class counter
 Class CRs[maxn]; // The maximum amount of classes that this university can have
-bool FirstReport = false; // A boolean to check whether user got report before or not 
 
 int main()
 {
@@ -359,6 +358,16 @@ int main()
                 }
                 if (Problem)
                     break;
+                Vp = ToLower(Vp);
+                Fc = ToLower(Fc);
+                if (Vp == "true" or Vp == "yes")
+                    VP = true;
+                else
+                    VP = false;
+                if (Fc == "true" or Fc == "yes")
+                    FC = true;
+                else
+                    FC = false;
                 InFile >> NOS;
                 Time Strt(H1, M1);
                 Time Dur(H2, M2);
@@ -439,6 +448,16 @@ int main()
                 InFile >> NOS;
                 Time Strt(H1, M1);
                 Time Dur(H2, M2);
+                Vp = ToLower(Vp);
+                Fc = ToLower(Fc);
+                if (Vp == "true" or Vp == "yes")
+                    VP = true;
+                else
+                    VP = false;
+                if (Fc == "true" or Fc == "yes")
+                    FC = true;
+                else
+                    FC = false;
                 C.Set_ID(ID);
                 C.Set_CN(ClassName);
                 C.Set_D(Date(0, 0, 0, DOW));
@@ -510,6 +529,18 @@ int main()
                 }
                 CRs[ClassCount] = C;
                 ClassCount++;
+                break;
+            }
+            case 5:
+            {
+                for (int i = 0; i < ClassCount; i++)
+                    CRs[i].Reporter(i + 1);
+                cout << "The Report.txt is in the dirctory of the program and has reports in it." << endl;
+                break;
+            }
+            case 6:
+            {
+                return 0;
                 break;
             }
         }

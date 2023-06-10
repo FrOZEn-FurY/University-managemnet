@@ -28,7 +28,7 @@ Class CRs[maxn]; // The maximum amount of classes that this university can have
 int main()
 {
     cout << "Welcome to the university management program\nplease do not press any key until the program loads completely" << endl;
-    _sleep(2);
+    _sleep(2); // A Welcome message and a little bit of wait
     while (1)
     {
         cout << "Choose from options below :" << endl << "1.Insert a class and setting its location yourself ( manual insertion )"
@@ -36,12 +36,12 @@ int main()
             << "3.Insert a class and setting its location yourself ( from a file )" << endl
             << "4.Inserting a class's information and letting the program set its location ( from a file )"
             << "5.Getting the report from the classes that had been set so far" << endl
-            << "6.Exit the program" << endl;
+            << "6.Exit the program" << endl; // Menu option
         int opt;
-        cin >> opt;
-        switch (opt)
+        cin >> opt; // This is the user's choice
+        switch (opt) // A switch on the user's choice to do the thing that has been said
         {
-            case 1:
+            case 1: // Start of getting info from the user
             {
                 Class C;
                 int ID, Location, SN, H, M, NOS, markS[10000];
@@ -49,12 +49,12 @@ int main()
                 bool VP, FC;
                 cout << "Enter Class ID ( It must be a 4 digit positive inteeger ):";
                 cin >> ID;
-                while (ID < 1000 or ID > 9999)
+                while (ID < 1000 or ID > 9999) // Checking if the class has a 4 digit ID
                 {
                     cout << "Wrong input. Please try again:";
                     cin >> ID;
                 }
-                while (C.Ret_Marker(ID))
+                while (C.Ret_Marker(ID)) // Checking if the ID is repeated or not
                 {
                     cout << "The Id must not be repeated, please try again:" << endl;
                     cin >> ID;
@@ -67,6 +67,11 @@ int main()
                 while (Location < 0 or Location > 10)
                 {
                     cout << "Wrong input. Please try again:";
+                    cin >> Location;
+                }
+                while ((VP and Location < 6 and Location > 1) or (!VP and Location > 5 and Location < 11))
+                {
+                    cout << "The class locations 1 to 5 doesn't have video projector and the classes 6 to 10 have video projectors. Your input of location doesn't match any of these. Try again :" << endl;
                     cin >> Location;
                 }
                 cout << "Enter the proffesor of this class's name:";
@@ -109,12 +114,12 @@ int main()
                 int countS = 0;
                 while (SN > 0)
                 {
-                    if (SN > 9999 or SN < 1000)
+                    if (SN > 9999 or SN < 1000) // Checking the 4 digit of student number
                     {
                         cout << "Wrong input, Please try again:" << endl;
                         continue;
                     }
-                    if (markS[SN] == 1)
+                    if (markS[SN] == 1) // Checking the repition of student number
                     {
                         cout << "The student number must not be repeated, please try again:" << endl;
                         continue;
@@ -123,7 +128,7 @@ int main()
                     s[countS].Set_SN(SN);
                     markS[SN] = 1;
                     countS++;
-                }
+                } // End of getting info from user
                 C.Set_ID(ID);
                 C.Set_CN(ClassName);
                 C.Set_D(Date(0, 0, 0, DOW));
@@ -136,9 +141,9 @@ int main()
                 if (FC)
                     C.Set_NOS(NOS);
                 for (int i = 0; i < countS; i++)
-                    C.Set_STU(s[i].Ret_SN(), s[i].Ret_N(), i);
+                    C.Set_STU(s[i].Ret_SN(), s[i].Ret_N(), i); 
                 bool Inter = false;
-                for (int i = 0; i < ClassCount; i++)
+                for (int i = 0; i < ClassCount; i++) // Checking the inference
                 {
                     if (CRs[i].Ret_D().Ret_Dow() == DOW)
                     {

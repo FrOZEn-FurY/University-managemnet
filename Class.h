@@ -43,7 +43,12 @@ public:
 	void Set_CN(string cn) { ClassName = cn; }
 	void Set_VP(bool vp) { VP = vp; }
 	void Set_FC(bool fc) { FC = fc; }
-	void Set_STU(int id, string n, int i) { s[i].Set_N(n); s[i].Set_SN(id); Number_Of_Studnets++; }
+	void Set_STU(int id, string n, int i) \
+	{ 
+		s[i].Set_N(n); 
+		s[i].Set_SN(id); 
+		Number_Of_Studnets++; // Storing the number of students for this class
+	}
 	void Set_D(Date d) { date = d; }
 	void Set_DT(Time dt) { DurationTime = dt; }
 	void Set_NOS(int nos) { Number_Of_Sessions = nos; }

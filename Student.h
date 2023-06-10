@@ -8,21 +8,15 @@ class Student // A class that stores the data about students
 {
 	string name; // Stores student's name
 	int StuNum; // Stored the student number
-	static int mark[10000]; // An array to check wither the StuNum is reapeted or not
 public:
 	Student(int sn = 0, string n = "") :name(n) // A constructor if we needed to give the values when we were creating an object
 	{
 		StuNum = sn;
-		mark[StuNum] = 1;
 		name = n;
 	}
 	void Set_N(string n) { name = n; } // A function to set the value of name
 	void Set_SN(int sn) { StuNum = sn; } // A function to set the value of StuNum
 	string Ret_N() { return name; } // A function that returns the value of name 
 	int Ret_SN() { return StuNum; } // A function that returns the value of StuNum 
-	void Set_Marker(int id) { mark[id] = 1; } // Using this function and the function belowl, we check whether the id was repeated or not
-	int Ret_Marker(int id) { return mark[id]; }
 };
-
-int Student::mark[10000] = {}; // Filling the array with zeros
 

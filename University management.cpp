@@ -44,7 +44,7 @@ int main()
             case 1:
             {
                 Class C;
-                int ID, Location, SN, H, M, NOS;
+                int ID, Location, SN, H, M, NOS, markS[10000];
                 string Proffesor, ClassName, DOW, Name;
                 bool VP, FC;
                 cout << "Enter Class ID ( It must be a 4 digit positive inteeger ):";
@@ -114,14 +114,14 @@ int main()
                         cout << "Wrong input, Please try again:" << endl;
                         continue;
                     }
-                    if (s[countS].Ret_Marker(SN))
+                    if (markS[SN] == 1)
                     {
                         cout << "The student number must not be repeated, please try again:" << endl;
                         continue;
                     }
                     s[countS].Set_N(Name);
                     s[countS].Set_SN(SN);
-                    s[countS].Set_Marker(SN);
+                    markS[SN] = 1;
                     countS++;
                 }
                 C.Set_ID(ID);
@@ -166,7 +166,7 @@ int main()
             case 2:
             {
                 Class C;
-                int ID, Location, SN, H, M, NOS;
+                int ID, Location, SN, H, M, NOS, markS[10000];
                 string Proffesor, ClassName, DOW, Name;
                 bool VP, FC;
                 cout << "Enter Class ID ( It must be a 4 digit positive inteeger ):";
@@ -229,14 +229,14 @@ int main()
                         cout << "Wrong input, Please try again:" << endl;
                         continue;
                     }
-                    if (s[countS].Ret_Marker(SN))
+                    if (markS[SN] == 1)
                     {
                         cout << "The student number must not be repeated, please try again:" << endl;
                         continue;
                     }
                     s[countS].Set_N(Name);
                     s[countS].Set_SN(SN);
-                    s[countS].Set_Marker(SN);
+                    markS[SN] = 1;
                     countS++;
                 }
                 C.Set_ID(ID);
@@ -317,7 +317,7 @@ int main()
             {
                 Class C;
                 bool Problem = false;
-                int ID, Location, SN, H1, M1, H2, M2, NOS;
+                int ID, Location, SN, H1, M1, H2, M2, NOS, markS[10000];
                 string Proffesor, ClassName, DOW, Name;
                 bool VP, FC;
                 cout << "Please enter the file address to read with the file name and prefix at the end of it. Please note that the file must contain only one class" <<
@@ -345,7 +345,7 @@ int main()
                         Problem = true;
                         break;
                     }
-                    if (s[countS].Ret_Marker(SN) == 1)
+                    if (markS[SN] == 1)
                     {
                         cout << "The file has a problem with student IDs, the IDs must not be repeated. Fix the problem and try again." << endl;
                         Problem = true;
@@ -353,7 +353,7 @@ int main()
                     }
                     s[countS].Set_N(Name);
                     s[countS].Set_SN(SN);
-                    s[countS].Set_Marker(SN);
+                    markS[SN];
                     countS++;
                 }
                 if (Problem)
@@ -404,7 +404,7 @@ int main()
             {
                 Class C;
                 bool Problem = false;
-                int ID, Location, SN, H1, M1, H2, M2, NOS;
+                int ID, Location, SN, H1, M1, H2, M2, NOS, markS[10000];
                 string Proffesor, ClassName, DOW, Name;
                 bool VP, FC;
                 cout << "Please enter the file address to read with the file name and prefix at the end of it. Please note that the file must contain only one class" <<
@@ -432,7 +432,7 @@ int main()
                         Problem = true;
                         break;
                     }
-                    if (s[countS].Ret_Marker(SN) == 1)
+                    if (markS[SN] == 1)
                     {
                         cout << "The file has a problem with student IDs, the IDs must not be repeated. Fix the problem and try again." << endl;
                         Problem = true;
@@ -440,7 +440,7 @@ int main()
                     }
                     s[countS].Set_N(Name);
                     s[countS].Set_SN(SN);
-                    s[countS].Set_Marker(SN);
+                    markS[SN] = 1;
                     countS++;
                 }
                 if (Problem)
@@ -593,4 +593,3 @@ string ToLower(string s) // This function makes the input string lowercase
             s[i] += 37;
     return s;
 }
-// Students marks
